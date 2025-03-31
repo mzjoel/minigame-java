@@ -2,40 +2,28 @@ import java.util.Scanner;
 
 public class Story {
     private Scene startScene;
-    private Character player;
+    private MainCharacter player;
     private Scanner scanner;
 
-    public Story(Scene startScene, Character player){
-        this.startScene = startScene;
+    public Story(Scene startingScene, MainCharacter player) {
+        this.startScene = startingScene;
         this.player = player;
         this.scanner = new Scanner(System.in);
     }
 
-    public void start(){play();}
-    public void play(){
-        Scene currentScene = startScene;
-        while(currentScene != null){
-            currentScene.displayScene();
-            System.out.print("Mana yang kamu pilih: ");
-            String option = scanner.nextLine().trim();
-            if(option.isEmpty()){
-                System.out.println("Input Kamu Kosong");
-                continue;
-            }if(option.equalsIgnoreCase("EXIT")){
-                System.out.println("Permainan berakhir. Terimas Kasih");
-                break;
-            }
-            if(option.equalsIgnoreCase("INFO")){
-                playerInformation();
-                continue;
-            }
-            Scene nextScene = currentScene.makeChoice(option, player);
-            if(nextScene == null)    {
-                continue;
+    public void start() {
+        while (startScene != null) {
+            startScene.displayScene();
+            System.out.print("Pilih A, B, atau C: ");
+            String choice = scanner.nextLine();
+            Scene nextScene = startScene.makeChoice(choice, player);
+
+            if (nextScene == null) {
+                System.out.println("To Be Continue");
+                break; // Keluar dari loop
             }
 
-            currentScene = nextScene;
-            
+            startScene = nextScene;
         }
     }
 

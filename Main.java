@@ -1,7 +1,12 @@
 import java.net.FileNameMap;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
+
+        Scanner scanner = new Scanner(System.in);
+
+        MainCharacter mainCharacter = MainCharacter.introduction();
         
         Scene finalScene = new Scene("Kamu berhasil mengalahkan naga dan menjadi pahlawan. Raja memberimu tiga pilihan hadiah.",
         "Menikahi Putri Raja", null, 5, 5, 
@@ -53,21 +58,14 @@ public class Main {
             "Negosiasi dengan raksasa", oldCityScene, 10, 25, 
             "Memanfaatkan kecerobohan raksasa", oldCityScene, 20, 20);
 
-        Scene snakeScene = new Scene("Kamu sedang bertarung dengan ular raksasa yang menghadang jalan keluar goa.",
+        Scene introScene = new Scene("Kamu sedang bertarung dengan ular raksasa yang menghadang jalan keluar goa.",
             "Menyerang penuh", giantScene, 20, 10, 
             "Counter Attack", giantScene, 15, 15, 
             "Defensif", giantScene, 10, 20);
 
-        Scene prologScene = new Scene("Kamu terbangun dari tidur panjang di dalam Goa. Kamu disediakan 3 kotak yang berisi perlengkapan petualang. Kotak Paladin berisi armor baja + pedang besar. Kotak Knight berisi armor kayu + pedang panjang. Kotak Assassin berisi armor kulit + 2 pedang kecil. Pilihanmu menentukan role game dan efek yang diberikan.",
-            "Memilih Kotak Paladin", snakeScene, 3, 10, 
-            "Memilih Kotak Knight", snakeScene, 5, 15, 
-            "Memilih Kotak Assassin", snakeScene, 1, 20);       
-
        
-     
-        Character mainPlayer = new Character(100, "Lynx");
 
-        Story story = new Story(introScene, mainPlayer);
+        Story story = new Story(introScene, mainCharacter);
 
         story.start();
     }
