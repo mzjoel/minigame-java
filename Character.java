@@ -81,7 +81,7 @@ class MainCharacter extends Character {
         return role;
     }
 
-    public int ttackDamage(){
+    public int attackDamage(){
         return attack;
     }
 
@@ -92,4 +92,16 @@ class MainCharacter extends Character {
     public int getXP(){
         return xpGain;
     }
+}
+
+
+class VillainCharacter extends Character{
+    public VillainCharacter(String name, int XP){
+        this.name = name;
+        this.health = 100;
+        this.attack = 3;
+        this.XP = XP;
+    }
+
+    public int attack(){ return attack;}
 }
