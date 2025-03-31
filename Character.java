@@ -1,13 +1,13 @@
 public class Character{
-    private String name;
-    private int health;
-    private int XP = 0;
-    private String item;
+    protected String name;
+    protected int health;
+    protected int XP = 0;
+    protected String item;
+    protected int attack;
+    protected int defense;
+    protected int xpGain;
 
-    public Character(int health, String name){
-            this.name = name;
-            this.health = health;
-    }
+    public Character(){}
 
     public void takeDamage(int damage){
         if(damage < 0){
@@ -38,4 +38,58 @@ public class Character{
         this.item = item;
     }
 
+}
+
+
+class MainCharacter extends Character {
+    private String role;
+    
+
+    public MainCharacter(String name, String role){
+        if(role.equalsIgnoreCase("Paladin")){
+            this.health = 100;
+            this.name = name;
+            this.role = "Paladin";
+            this.attack = 30;
+            this.defense = 20;
+            this.xpGain = 5;
+        }else if(role.equalsIgnoreCase("Knight")){
+            this.health = 100;
+            this.name = name;
+            this.role = "Knight";
+            this.attack = 20;
+            this.defense = 20;
+            this.xpGain = 15;
+        }else if(role.equalsIgnoreCase("Assassin")){
+            this.health = 100;
+            this.name = name;
+            this.role = "Assassins";
+            this.attack = 10;
+            this.defense = 15;
+            this.xpGain = 20;
+        }else{
+            this.health = 100;
+            this.name = name;
+            this.role = "Warrior";
+            this.attack = 5;
+            this.defense = 5;
+            this.xpGain = 5;
+        }
+    }
+
+    public String Role(){
+        return role;
+    }
+
+    public int ttackDamage(){
+        return attack;
+    }
+
+    public int Defense(){
+        return defense;
+    }
+
+    public int getXP(){
+        return xpGain;
+    }
 }
