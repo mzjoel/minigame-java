@@ -1,87 +1,64 @@
+import java.util.Scanner;
+
 public class Scene {
-    private String description, choiceA, choiceB, choiceC;
-    private Scene nextSceneA, nextSceneB, nextSceneC;
-    private int damageA, damageB, damageC, XPA, XPB, XPC;
+    private String description;
+    private String questions;
+    private String answer;
+    private Scene nextScene;
+    private int xp;
 
-    public Scene(String description, String choiceA, Scene nextSceneA, int damageA, int XPA,
-                 String choiceB, Scene nextSceneB, int damageB, int XPB,
-                 String choiceC, Scene nextSceneC, int damageC, int XPC) {
+    public Scene(String description, String questions, String answer, int xp, Scene nextScene) {
         this.description = description;
-        this.choiceA = choiceA;
-        this.choiceB = choiceB;
-        this.choiceC = choiceC;
-        this.nextSceneA = nextSceneA;
-        this.nextSceneB = nextSceneB;
-        this.nextSceneC = nextSceneC;
-        this.damageA = damageA;
-        this.damageB = damageB;
-        this.damageC = damageC;
-        this.XPA = XPA;
-        this.XPB = XPB;
-        this.XPC = XPC;
+        this.questions = questions;
+        this.answer = answer.trim().toUpperCase(); // Normalisasi jawaban
+        this.xp = xp;
+        this.nextScene = nextScene;
     }
 
-    public void displayScene() {
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public Scene play(MainCharacter player, VillainCharacter villain) {
         System.out.println(description);
-        if (choiceA != null) {
-            System.out.println("A: " + choiceA);
-        }
-        if (choiceB != null) {
-            System.out.println("B: " + choiceB);
-        }
-        if (choiceC != null) {
-            System.out.println("C: " + choiceC);
-        }
-    }
-
-    public Scene makeChoice(String choice, MainCharacter player) {
-    
-        choice = choice.trim().toUpperCase();
-    
-        switch (choice) {
-            case "A":
-                player.takeDamage(damageA);
-                player.addXP(XPA);
-                if (nextSceneA == null) {
-                    System.out.println("To Be Continued");
-                    return null;
-                }
-                return nextSceneA;
-            case "B":
-                player.takeDamage(damageB);
-                player.addXP(XPB);
-                if (nextSceneB == null) {
-                    System.out.println("To Be Continued");
-                    return null;
-                }
-                return nextSceneB;
-            case "C":
-                player.takeDamage(damageC);
-                player.addXP(XPC);
-                if (nextSceneC == null) {
-                    System.out.println("To Be Continued");
-                    return null;
-                }
-                return nextSceneC;
-            default:
-                System.out.println("Pilihanmu tidak tersedia, tolong input ulang.");
+        while (true) {
+            if (player.getHealth() <= 0) {
+                System.out.println("You Lose !!!");
                 return null;
+            }
+        
+            System.out.println(questions);
+            System.out.print("Jawaban: ");
+
+            if (!scanner.hasNextLine()) {
+                System.out.println("Input tidak ada. Game Berhenti");
+                return null;
+            }
+
+            String choice = scanner.nextLine().trim().toUpperCase();
+
+            if (choice.equals(answer)) {
+                int attack = 100;
+                System.out.println("Jawabanmu Benar! Kamu mengalahkan " + villain.getName() + " dengan Hit: " + attack);
+                villain.hit(attack);
+                player.increaseXp(villain.getXp());
+                player.checkStatus();
+                if (nextScene == null) {
+                    System.out.println("To Be Continued...");
+    
+                    return null;
+                }
+                return nextScene;
+            }
+
+            int attack = 5;
+            player.hit(attack);
+            System.out.println("Jawabanmu Salah! Kamu diserang oleh " + villain.getName() + " dengan serangan " + attack);
+            player.checkStatus();
+
+            if (player.getHealth() <= 0) {
+                System.out.println("Game Over! Kamu kehabisan nyawa.");
+                return null;
+            }
         }
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String optionA() {
-        return choiceA;
-    }
-
-    public String optionB() {
-        return choiceB;
-    }
-
-    public String optionC() {
-        return choiceC;
     }
 }
+

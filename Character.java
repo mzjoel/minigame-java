@@ -3,43 +3,50 @@ import java.util.Scanner;
 public class Character{
     protected String name;
     protected int health;
-    protected int XP = 0;
+    protected int xp = 0;
+    protected int power;
     protected String item;
-    protected int attack;
-    protected int defense;
-    protected int xpGain;
 
-    public Character(){}
-
-
-    public void addXP(int additionalXP){
-        XP += additionalXP;
-        return;
-    }
     public String getName(){
         return name;
     }
+
     public int getHealth(){
         return health;
     }
-    public String getItem(){
-        return item;
+
+    public int getXp(){
+        return xp;
     }
 
-    public int getXP(){
-        return XP;
-    }
-    public void setItem(String item){
-        this.item = item;
-    }
-
-    public int takeDamage(int damage){
-        if(damage < 0){
-            System.out.println("Damage Harus Positif");
-            return damage;
+    public int hit(int attack){
+        if(attack < 0){
+            return health;
         }
-        health -= damage;
-        return damage;
+        health -= attack;
+        return health;
+    }
+    
+
+    public void increaseXp(int addXp){
+        if(addXp < 0){
+            return;
+        }
+        this.xp += addXp;
+    }
+
+    public void recoveryHP(int hp){
+        this.health += hp;
+    }
+
+    public void increasePower(int damage){
+        this.power += damage;
+    }
+
+    public void checkStatus(){
+        System.out.println("Status "+getName());
+        System.out.println("HP: "+getHealth());
+        System.out.println("XP: "+getXp());
     }
 
 
@@ -49,6 +56,10 @@ public class Character{
 class MainCharacter extends Character {
     private String role;
 
+    public String Role(){
+        return role;
+    }
+
     public MainCharacter(String name, String role){
         switch(role.toLowerCase()){
             case "paladin":
@@ -56,55 +67,27 @@ class MainCharacter extends Character {
                 this.health = 100;
                 this.name = name;
                 this.role = "Paladin";
-                this.attack = 30;
-                this.defense = 20;
-                this.xpGain = 5;
                 break;
             case "knight":
             case "2":
                 this.health = 100;
                 this.name = name;
                 this.role = "Knight";
-                this.attack = 20;
-                this.defense = 20;
-                this.xpGain = 15;
                 break;
             case "Assassin":
             case "3":
                 this.health = 100;
                 this.name = name;
                 this.role = "Assassin";
-                this.attack = 10;
-                this.defense = 15;
-                this.xpGain = 20;
                 break;
             default:
                 this.health = 100;
                 this.name = name;
                 this.role = "Warrior";
-                this.attack = 5;
-                this.defense = 5;
-                this.xpGain = 5;
                 break;
 
 
         }
-    }
-
-    public String Role(){
-        return role;
-    }
-
-    public int attackDamage(){
-        return attack;
-    }
-
-    public int Defense(){
-        return defense;
-    }
-
-    public int getXP(){
-        return xpGain;
     }
 
     public static MainCharacter introduction(){
@@ -118,24 +101,18 @@ class MainCharacter extends Character {
 
         MainCharacter mainCharacter = new MainCharacter(userName, userRole);
 
-        System.out.println("\n ==== Biodata Karakter ==== ");
-        System.out.println("Nama: "+mainCharacter.getName());
-        System.out.println("Role: "+mainCharacter.Role());
-        System.out.println("Health: "+mainCharacter.getHealth());
-        System.out.println("Level Attack: "+mainCharacter.attackDamage());
-        System.out.println("Tingkat Defense: "+mainCharacter.Defense());
-        System.out.println("Selamat Berpetualang");
-
+        System.out.println(mainCharacter.getName()+" telah memilih sebagai "+mainCharacter.Role());
         return mainCharacter;
     }
+
 }
 
 class VillainCharacter extends Character{
-    public VillainCharacter(String name, int XP){
+    public int bonusXp;
+
+    public VillainCharacter(String name, int bonusXp){
         this.name = name;
         this.health = 100;
-        this.attack = 3;
-        this.XP = XP;
+        this.xp = bonusXp;
     }
-    public int attack(){ return attack;}
 }
